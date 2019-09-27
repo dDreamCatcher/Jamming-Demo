@@ -33,7 +33,7 @@ def serial_ports():
             s.close()
             result.append(a_port)
         except serial.SerialException:
-            pass
+            pas
 
     return result
 
@@ -41,6 +41,7 @@ def serial_ports():
 def setupArduino(pin_El, pin_Az, mode=SERVO):
 	i=0
 	#setup serial ports
+	import pdb;pdb.set_trace()
 	for p in serial_ports():
 		ports.append(p)
 		boards.append(Arduino(p))
@@ -61,9 +62,9 @@ def setServoAngle(board, pin, angle):
 
 	
 
-if __name__ == '__main__':
-	for b in setupArduino(8,9)
-		setServoAngle(b,8,30)
-		setServoAngle(b,9,30)
+#if __name__ == '__main__':
+	#for b in setupArduino(8,9):
+		#setServoAngle(b,8,30)
+		#setServoAngle(b,9,30)
 
 
