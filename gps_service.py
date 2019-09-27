@@ -47,14 +47,14 @@ class GPSPoint:
 		x = math.cos(phi1)*math.sin(phi2) - math.sin(phi1)*math.cos(phi2)*math.cos(delta_lambda)
 		i_bearing = math.degrees(math.atan2(y, x))
 		f_bearing = i_bearing + 180
-		return i_bearing, f_bearing
+		return int(i_bearing), int(f_bearing)
 		#return wrap360 function used here
 
 	def elevationAngle(self, point):
 		delta_height = point.alt - self.alt  #if in meters
 		distance = self.distanceTo(point)
 		elevation = math.atan(delta_height/distance) #check degrees or radian
-		return elevation
+		return int(elevation)
 
 #if __name__ == '__main__':
 	#test	
