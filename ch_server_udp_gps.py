@@ -4,7 +4,7 @@ import time
 import struct
 # import statistics
 import math
-
+import gps_service
 
 # Create UDP socket 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -13,11 +13,10 @@ sock.bind(server_address)
 # sock.setblocking(0)
 print >>sys.stderr, 'starting up on %s port %s' % server_address  # Default print
 
-updateIdx = 0
-counter=0
+
 d=dict()
 while True:
-    var1 = time.time()
+    #var1 = time.time()
     data, address = sock.recvfrom(1024)
 
     if data:
@@ -29,7 +28,23 @@ while True:
         if data=="\n":
             if d.get('Fix')=='1':
                 print("GPS locked")
+		pt = gps_service.GPSPoint(
+			float(d.get("Location")[0]),
+			float(d.get("Location")[1]),
+			float(d.get("Altitude"))
+		)
+
                 #do calculation
+		b_angles = dict()
+		e_angles = dict()
+		for jAntenna in gps_service.JAMMING_ANTENNAS.keys():
+			
+			b_angles.update(
+				{jAntenna: 
+					gps_service.JAMMING_ANTENNAS[jAntenna].bearingAngle(pt)})
+			e_angles.update(
+				{jAntenna: 
+					gps_service.JAMMING_ANTENNAS[jAntenna].elevationAngle(pt)})
                 d.clear()
         elif ": " not in data:
             continue
@@ -40,10 +55,7 @@ while True:
                 value = tuple(value.split(', '))
             d.update({key: value})
             print "Dict: ", d
-            var2 = time.time()
-            updateIdx = updateIdx + 1
-            #print "update %s - time: %.2f ms" % (str(updateIdx), round(1000.0*(var2-var1),2))
-
+          
     else:
         print >> sys.stderr, 'Done', address
         break
