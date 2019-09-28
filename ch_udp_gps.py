@@ -5,7 +5,7 @@ import struct
 import time
 import serial
 
-def switchTest(argument)
+def switchTest(argument):
 	switcher ={
 		0: "OFFLINE TEST",
 		1: "ONLINE TEST"
@@ -27,16 +27,16 @@ def switchTest(argument)
 		# open and read files
 		with open(f, 'r') as rtk:
 
-		for line in rtk:
-			#print(line)
-			#splitted =filter(None,line.split(' '))[0:5]
+			for line in rtk:
+				#print(line)
+				#splitted =filter(None,line.split(' '))[0:5]
 	
-			while True:
-			    #print >> sys.stderr, '2nd sending: "%s"' % data2.encode('hex_codec')
-			    time.sleep(0.001)
-			    sock.sendto(line, server_address1)
+				while True:
+				    #print >> sys.stderr, '2nd sending: "%s"' % data2.encode('hex_codec')
+				    time.sleep(0.001)
+				    sock.sendto(line, server_address1)
 
-			sock.close()
+				sock.close()
 	
 	elif argument == switcher.keys()[1]:
 		#for real time test

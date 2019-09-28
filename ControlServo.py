@@ -33,7 +33,7 @@ def serial_ports():
             s.close()
             result.append(a_port)
         except serial.SerialException:
-            pas
+            pass
 
     return result
 
@@ -41,13 +41,15 @@ def serial_ports():
 def setupArduino(pin_El, pin_Az, mode=SERVO):
 	i=0
 	#setup serial ports
-	import pdb;pdb.set_trace()
 	for p in serial_ports():
 		ports.append(p)
 		boards.append(Arduino(p))
 		boards[i].digital[pin_El].mode = mode  # Set mode of pins 8 & 9 as SERVO
 		boards[i].digital[pin_Az].mode = mode
 		sleep(2)	# Need to give some time to pyFirmata and Arduino to synchronize
+		#boards[i].servo_config(pin_El,min_pulse=544, max_pulse=2400, angle=0)
+		#boards[i].servo_config(pin_Az,min_pulse=544, max_pulse=2400, angle=0)
+
 		print(ports)
 		print(boards)
 		i +=1
@@ -59,6 +61,8 @@ def setupArduino(pin_El, pin_Az, mode=SERVO):
 def setServoAngle(board, pin, angle):
 	board.digital[pin].write(angle)
     	sleep(0.015)
+
+# def setServoConfigure()
 
 	
 

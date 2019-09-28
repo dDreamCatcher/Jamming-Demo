@@ -5,18 +5,18 @@ import struct
 # import statistics
 import math
 import gps_service
-import controlServo
+import ControlServo
 
 
 
-def startMain(argument)
+def startMain(argument):
 	pin_El, pin_Az = 8,9
 
 	# Create UDP socket 
 	sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	server_address = ('', 50001)
 	sock.bind(server_address)
-	boards = controlServo.setupArduino(pin_El, pin_Az)
+	boards = ControlServo.setupArduino(pin_El, pin_Az)
 	keys = ['Date', 'Time', 'Langtitude', 'Longtitude', 'Altitude']	
 	
 	# sock.setblocking(0)
@@ -54,7 +54,7 @@ def startMain(argument)
 		#read from rtk data file offline or real time
 		elif argument == 'RTK':
 			new_line =filter(None,line.split(' '))[0:5]
-			for k in range(len(keys))
+			for k in range(len(keys)):
 				d_dict[keys[k]] = new_line[k]
 			ServoControl(d_dict, argument)
 			d_dict.clear()
@@ -73,13 +73,13 @@ def startMain(argument)
 # control servo angle based on gps coor calculation
 def ServoControl(d, argument):
 	
-	if argument == 'Arduino'
+	if argument == 'Arduino':
 		pt = gps_service.GPSPoint(
 			float(d.get("Location")[0]),
 			float(d.get("Location")[1]),
 			float(d.get("Altitude"))
 		)
-	elif argument == 'RTK'
+	elif argument == 'RTK':
 		pt = gps_service.GPSPoint(
 			float(d.get("Langtitude")),
 			float(d.get("Longtitude")),
@@ -103,8 +103,8 @@ def ServoControl(d, argument):
 	keys_b = sorted(b_angles.keys())
 	keys_e = sorted(e_angles.keys())
 	for a in boards:
-		controlServo.setServoAngle(a,pin_El,e_angles[keys_e[i]][0])
-		controlServo.setServoAngle(a,pin_Az,b_angles[keys_b[i]])
+		ControlServo.setServoAngle(a,pin_El,e_angles[keys_e[i]][0])
+		ControlServo.setServoAngle(a,pin_Az,b_angles[keys_b[i]])
 		i +=1
 
 if __name__ == '__main__':

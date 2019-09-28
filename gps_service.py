@@ -7,8 +7,7 @@ class GPSPoint:
 		self.lat = lat
 		self.lon = lon
 		self.alt = alt
-
-	#def Parse():
+		
 	
 	def distanceTo(self, point, radius=6371e3):
     		R = radius
@@ -63,6 +62,7 @@ class GPSPoint:
 	#obj2 = GPSPoint(42.338641, -71.086109, 0)
 	#print(obj.distanceTo(obj2))
 	#print(obj.bearingAngle(obj2))
+
 
 JAMMING_ANTENNAS = { 
 	'jam1' :GPSPoint(42.338639, -71.086194, 0),
