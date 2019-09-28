@@ -42,7 +42,7 @@ def switchTest(argument):
 		#for real time test
 		#print(switcher.values()[1])
 		# open serail port
-		serial_port = '/dev/ttyACM1';
+		serial_port = '/dev/ttyACM1'
 		baud_rate = 115200; #In arduino, Serial.begin(baud_rate)
 		ser = serial.Serial(serial_port, baud_rate)
 
@@ -53,9 +53,9 @@ def switchTest(argument):
 		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 		while True:
-		    line = ser.readline();
+		    line = ser.readline()
 		    line = line.decode("utf-8") #ser.readline returns a binary, convert to string
-		    print(line);
+		    print(line)
 
 		    #print >> sys.stderr, '2nd sending: "%s"' % data2.encode('hex_codec')
 		    time.sleep(0.001)
