@@ -1,4 +1,4 @@
-
+"""import pynmea2 can be also used to parse nmea sentence"""
 
 def parseGNGGA(sentence):
     parse = { 
@@ -42,9 +42,10 @@ def altitude(alt, geo):
     
     return float(alt)+float(geo)
 
+"""
 if __name__ == '__main__':
-	# argument: Arduino or RTK
+	# test
 	print(parseGNGGA('$GNGGA,213659.20,4220.3190747,N,07105.1751820,W,1,17,0.6,16.686,M,-28.724,M,0.0,*5F'))
 print(parseGNGGA('$GNGGA,213658.20,4220.3193477,N,07105.1753880,W,1,17,0.6,17.757,M,-28.724,M,0.0,*59'))
-
+"""
 
