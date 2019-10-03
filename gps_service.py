@@ -46,22 +46,26 @@ class GPSPoint:
 		x = math.cos(phi1)*math.sin(phi2) - math.sin(phi1)*math.cos(phi2)*math.cos(delta_lambda)
 		i_bearing = math.degrees(math.atan2(y, x))
 		f_bearing = i_bearing + 180
-		return int(i_bearing), int(f_bearing)
+        if i_bearing < 0:
+            return int(f_bearing)
+		return int(i_bearing)
 		#return wrap360 function used here
 
 	def elevationAngle(self, point):
 		delta_height = point.alt - self.alt  #if in meters
 		distance = self.distanceTo(point)
-		elevation = math.atan(delta_height/distance) #check degrees or radian
+		elevation = math.degrees(math.atan(delta_height/distance)) #check degrees or radian
 		return int(elevation)
 
-#if __name__ == '__main__':
+"""
+if __name__ == '__main__':
 	#test	
-	#obj = GPSPoint(42.338639, -71.086194, 0)
+	obj = GPSPoint(42.338651245, -71.0862530333, 0)
 	#print(obj.lat, obj.lon)
-	#obj2 = GPSPoint(42.338641, -71.086109, 0)
-	#print(obj.distanceTo(obj2))
-	#print(obj.bearingAngle(obj2))
+	obj2 = GPSPoint(42.338654548, -71.086245580, 0)
+	print(obj.distanceTo(obj2))
+	print(obj.bearingAngle(obj2))
+"""
 
 
 JAMMING_ANTENNAS = { 
