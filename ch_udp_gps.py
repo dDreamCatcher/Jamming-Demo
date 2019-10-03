@@ -14,14 +14,12 @@ def switchTest(argument):
     }
         # Create the datagram socket
         server_address1 = ('10.42.0.58', 50001)
-
         # Create the datagram socket - Multicast
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
     if argument == switcher.keys()[0]:
         #for offline test
         #print(switcher.values()[0])	
-        
-
         #fname example rtk.txt
         fname ='rtk.txt'
         #fpath example /home/genesys/Desktop/Kubra/Jamming-Demo/

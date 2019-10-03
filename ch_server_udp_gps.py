@@ -9,7 +9,6 @@ import ControlServo
 import rtk_serial_parse.py
 
 
-
 def startMain(argument, s=False):
 	pin_El, pin_Az = 8,9
 
@@ -114,8 +113,9 @@ def ServoControl(d, argument):
 		ControlServo.setServoAngle(a,pin_Az,b_angles[keys_b[i]])
 		i +=1
 
+
 if __name__ == '__main__':
-	# argument: Arduino or RTK
-	startMain('RTK')
+    # argument: Arduino or RTK
+    startMain('RTK')
 
 
