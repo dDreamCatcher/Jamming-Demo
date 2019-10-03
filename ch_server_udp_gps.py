@@ -6,10 +6,12 @@ import struct
 import math
 import gps_service
 import ControlServo
-import rtk_serial_parse.py
+import rtk_serial_parse
 
 
 def startMain(argument, s=False):
+    global pin_El
+    global pin_Az
 	pin_El, pin_Az = 8,9
 
 	# Create UDP socket 
@@ -29,55 +31,55 @@ def startMain(argument, s=False):
 	    data, address = sock.recvfrom(1024)
 
 	    if data:
-		#print "Received data: %s" % data.encode('hex_codec')
-		print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
-		#print "Received data: %s" % data.encode('hex_codec')
-		print "Received data: %s" % data
+		    #print "Received data: %s" % data.encode('hex_codec')
+		    print >>sys.stderr, 'received %s bytes from %s' % (len(data), address)
+		    #print "Received data: %s" % data.encode('hex_codec')
+		    print "Received data: %s" % data
 		
-		#gps data from arduino serial
-		if argument == 'Arduino':
+		    #gps data from arduino serial
+		    if argument == 'Arduino':
 
-			if data=="\n":
-			    if d_dict.get('Fix')=='1':
-				print("GPS locked")
-				ServoControl(d_dict, argument)
-				d_dict.clear()
-			elif ": " not in data:
-			    continue
-			else:
-			    line = data.split(': ')
-			    key, value = line[0], line[1].strip()
-			    if key == 'Location':
-				value = tuple(value.split(', '))
-			    d_dict.update({key: value})
-			    print "Dict: ", d_dict
+			    if data=="\n":
+			        if d_dict.get('Fix')=='1':
+				        print("GPS locked")
+				        ServoControl(d_dict, boards, argument)
+				        d_dict.clear()
+			    elif ": " not in data:
+			        continue
+			    else:
+			        line = data.split(': ')
+			        key, value = line[0], line[1].strip()
+			        if key == 'Location':
+				        value = tuple(value.split(', '))
+		            d_dict.update({key: value})
+		            print "Dict: ", d_dict
 
-		#read from rtk data file offline or real time
-		elif argument == 'RTK':
-            if s==True:
-			new_data =filter(None,data.split(' '))[0:5]
-			for k in range(len(keys)):
-				d_dict[keys[k]] = int(new_data[k])
+		    #read from rtk data file offline or real time
+		    elif argument == 'RTK':
+                if s==True:
+			        new_data =filter(None,data.split(' '))[0:5]
+			        for k in range(len(keys)):
+				        d_dict[keys[k]] = new_data[k]
 
-            else:
-                d_dict = rtk_serial_parse.parseGNGGA(data)
+                else:
+                    d_dict = rtk_serial_parse.parseGNGGA(data)
 
-			ServoControl(d_dict, argument)
-			d_dict.clear()
+			    ServoControl(d_dict, boards, argument)
+			    d_dict.clear()
 			
-		else:
-			print("Wrong Argument")
+		    else:
+			    print("Wrong Argument")
 		  
 	    else:
-		print >> sys.stderr, 'Done', address
-		break
+		    print >> sys.stderr, 'Done', address
+		    break
 		     
 	# Clean up the connection
 	sock.close()
 
 
 # control servo angle based on gps coor calculation
-def ServoControl(d, argument):
+def ServoControl(d, boards, argument):
 	
 	if argument == 'Arduino':
 		pt = gps_service.GPSPoint(
@@ -109,8 +111,8 @@ def ServoControl(d, argument):
 	keys_b = sorted(b_angles.keys())
 	keys_e = sorted(e_angles.keys())
 	for a in boards:
-		ControlServo.setServoAngle(a,pin_El,e_angles[keys_e[i]][0])
-		ControlServo.setServoAngle(a,pin_Az,b_angles[keys_b[i]])
+		ControlServo.setServoAngle(a,pin_Az,b_angles[keys_e[i]])
+		ControlServo.setServoAngle(a,pin_El,a_angles[keys_b[i]])
 		i +=1
 
 
