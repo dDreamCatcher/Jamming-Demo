@@ -47,8 +47,8 @@ def setupArduino(pin_El, pin_Az, mode=SERVO):
 		boards[i].digital[pin_El].mode = mode  # Set mode of pins 8 & 9 as SERVO
 		boards[i].digital[pin_Az].mode = mode
 		sleep(2)	# Need to give some time to pyFirmata and Arduino to synchronize
-		#boards[i].servo_config(pin_El,min_pulse=544, max_pulse=2400, angle=0)
-		#boards[i].servo_config(pin_Az,min_pulse=544, max_pulse=2400, angle=0)
+		boards[i].servo_config(pin_El,min_pulse=544, max_pulse=2400, angle=0)
+		boards[i].servo_config(pin_Az,min_pulse=544, max_pulse=2400, angle=0)
 
 		print(ports)
 		print(boards)
@@ -59,16 +59,17 @@ def setupArduino(pin_El, pin_Az, mode=SERVO):
 	
 # Custom angle to set Servo motor angle
 def setServoAngle(board, pin, angle):
-	board.digital[pin].write(angle)
-    	sleep(0.015)
+    board.digital[pin].write(angle)
+    sleep(0.015)
 
 # def setServoConfigure()
 
 	
-
-#if __name__ == '__main__':
-	#for b in setupArduino(8,9):
-		#setServoAngle(b,8,30)
-		#setServoAngle(b,9,30)
+"""
+if __name__ == '__main__':
+	for b in setupArduino(8,9):
+		setServoAngle(b,8,90)
+		setServoAngle(b,9,180)
+"""
 
 
