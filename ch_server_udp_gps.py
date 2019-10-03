@@ -6,10 +6,11 @@ import struct
 import math
 import gps_service
 import ControlServo
+import rtk_serial_parse.py
 
 
 
-def startMain(argument):
+def startMain(argument, s=False):
 	pin_El, pin_Az = 8,9
 
 	# Create UDP socket 
@@ -17,7 +18,7 @@ def startMain(argument):
 	server_address = ('', 50001)
 	sock.bind(server_address)
 	boards = ControlServo.setupArduino(pin_El, pin_Az)
-	keys = ['Date', 'Time', 'Langtitude', 'Longtitude', 'Altitude']	
+	keys = ['Date', 'Time', 'Latitude', 'Longitude', 'Altitude']	
 	
 	# sock.setblocking(0)
 	print >>sys.stderr, 'starting up on %s port %s' % server_address  # Default print
@@ -51,11 +52,17 @@ def startMain(argument):
 				value = tuple(value.split(', '))
 			    d_dict.update({key: value})
 			    print "Dict: ", d_dict
+
 		#read from rtk data file offline or real time
 		elif argument == 'RTK':
-			new_line =filter(None,line.split(' '))[0:5]
+            if s==True:
+			new_data =filter(None,data.split(' '))[0:5]
 			for k in range(len(keys)):
-				d_dict[keys[k]] = new_line[k]
+				d_dict[keys[k]] = int(new_data[k])
+
+            else:
+                d_dict = rtk_serial_parse.parseGNGGA(data)
+
 			ServoControl(d_dict, argument)
 			d_dict.clear()
 			
@@ -81,8 +88,8 @@ def ServoControl(d, argument):
 		)
 	elif argument == 'RTK':
 		pt = gps_service.GPSPoint(
-			float(d.get("Langtitude")),
-			float(d.get("Longtitude")),
+			float(d.get("Latitude")),
+			float(d.get("Longitude")),
 			float(d.get("Altitude"))
 		)
 	
