@@ -42,17 +42,18 @@ def setupArduino(pin_El, pin_Az, mode=SERVO):
 	i=0
 	#setup serial ports
 	for p in serial_ports():
-		ports.append(p)
-		boards.append(Arduino(p))
-		boards[i].digital[pin_El].mode = mode  # Set mode of pins 8 & 9 as SERVO
-		boards[i].digital[pin_Az].mode = mode
-		sleep(2)	# Need to give some time to pyFirmata and Arduino to synchronize
-		boards[i].servo_config(pin_El,min_pulse=544, max_pulse=2400, angle=0)
-		boards[i].servo_config(pin_Az,min_pulse=544, max_pulse=2400, angle=0)
+        if '/dev/ttyACM' in p:
+		    ports.append(p)
+		    boards.append(Arduino(p))
+		    boards[i].digital[pin_El].mode = mode  # Set mode of pins 8 & 9 as SERVO
+		    boards[i].digital[pin_Az].mode = mode
+		    sleep(2)	# Need to give some time to pyFirmata and Arduino to synchronize
+		    boards[i].servo_config(pin_El,min_pulse=544, max_pulse=2400, angle=0)
+		    boards[i].servo_config(pin_Az,min_pulse=544, max_pulse=2400, angle=0)
 
-		print(ports)
-		print(boards)
-		i +=1
+		    print(ports)
+		    print(boards)
+		    i +=1
 	return boards
 	
 
